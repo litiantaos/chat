@@ -1,29 +1,31 @@
-# chat
+# Chat
 
-This template should help get you started developing with Vue 3 in Vite.
+基于 Vue 3 开发的现代化 AI 聊天应用。
 
-## Recommended IDE Setup
+## 功能特性
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- 创建不同人物设定的AI好友
+- 与单个AI好友聊天
+- 与多个AI好友群聊
 
-## Customize configuration
+## 技术栈
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Vue 3：前端框架
+- Vue Router：路由管理
+- Vite：构建工具
+- TailwindCSS：样式框架
+- Remixicon：图标库
+- DeepSeek: AI 聊天服务
 
-## Project Setup
+## 项目设置
 
 ```sh
+# 安装依赖
 npm install
-```
 
-### Compile and Hot-Reload for Development
-
-```sh
+# 启动项目
 npm run dev
-```
 
-### Compile and Minify for Production
-
-```sh
+# 构建项目
 npm run build
 ```

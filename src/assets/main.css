@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 @import 'tailwindcss';
 
 body {
-  @apply font-mono text-sm text-gray-700;
+  @apply font-["Noto_Sans",sans-serif] text-sm text-gray-700;
 }
 
 button:not(:disabled),
