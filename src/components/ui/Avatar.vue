@@ -7,7 +7,7 @@
     <div
       class="absolute inset-0 flex items-center justify-center bg-black/10 font-bold text-white [text-shadow:0_0_4px_rgba(0,0,0,0.2)]"
     >
-      {{ text?.[0].toUpperCase() }}
+      {{ text?.[0]?.toUpperCase() }}
     </div>
   </div>
 </template>

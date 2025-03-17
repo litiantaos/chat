@@ -2,22 +2,28 @@
   <div v-if="!loading" class="flex w-full flex-1 flex-col gap-2">
     <template v-for="chat in chats" :key="chat.id">
       <div
-        class="flex items-center rounded-md bg-gray-100 p-2 transition-colors hover:bg-gray-200/60"
+        class="flex items-center gap-2 rounded-md bg-gray-100 p-2 transition-colors hover:bg-gray-200/60"
         :class="{
           'bg-gray-200': chat.id === currentChatId,
         }"
         @click="handleChatClick(chat.id)"
       >
         <UserDisplay :name="getChatName(chat)" :sub="getLastMessageText(chat)">
-          <i v-if="chat.type === 'group'" class="ri-group-2-line text-xs"></i>
-          <div class="text-xs text-gray-400">
-            {{ getLastMessageTime(chat) }}
+          <div class="flex flex-1 items-center justify-end gap-2">
+            <i v-if="chat.type === 'group'" class="ri-group-2-line text-xs"></i>
+            <div class="text-xs text-gray-400">
+              {{ getLastMessageTime(chat) }}
+            </div>
           </div>
         </UserDisplay>
 
         <div
-          v-if="chat.id === currentChatId"
-          class="h-1.5 w-1.5 flex-none rounded-full bg-blue-500"
+          class="flex-none rounded-full bg-blue-500 transition-[width,height,opacity] duration-300"
+          :class="
+            chat.id === currentChatId
+              ? 'h-1.5 w-1.5 opacity-100'
+              : 'h-0 w-0 opacity-0'
+          "
         ></div>
       </div>
     </template>

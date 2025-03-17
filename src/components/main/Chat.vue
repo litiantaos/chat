@@ -1,5 +1,8 @@
 <template>
-  <div v-if="chat" class="relative flex flex-1 flex-col overflow-hidden">
+  <div
+    v-if="chat && chat.members?.length"
+    class="relative flex flex-1 flex-col overflow-hidden"
+  >
     <div
       class="flex flex-1 flex-col gap-4 overflow-y-auto p-4"
       ref="messageContainer"
