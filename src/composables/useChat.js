@@ -74,7 +74,7 @@ const createAICharacter = async (characterData) => {
     // 更新缓存
     chats.value.unshift({
       ...savedChat,
-      members: members,
+      members: members[0],
       lastMessage: null,
     })
     chatMessages.value[savedChat.id] = []
@@ -186,6 +186,8 @@ const sendMessage = async (chatId, content) => {
       // 添加系统提示词
       chatHistory.unshift({ role: 'system', content: systemPrompt })
 
+      // console.log('chatHistory', chatHistory)
+
       // 调用API获取回复
       const reply = await getAIResponse(chatHistory)
 
@@ -195,6 +197,8 @@ const sendMessage = async (chatId, content) => {
         content: reply,
         createdBy: character.id,
       })
+
+      // console.log('aiMessage', aiMessage)
 
       // 更新缓存
       chatMessages.value[chatId].push(aiMessage)

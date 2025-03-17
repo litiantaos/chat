@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="chat && chat.members?.length"
+    v-if="chat && chat.members && chat.members.length"
     class="relative flex flex-1 flex-col overflow-hidden"
   >
     <div
@@ -74,7 +74,7 @@ const isUserMessage = (message) => message.createdBy === currentUser.value?.id
 
 // 获取发送者名称
 const getSenderName = (message) => {
-  const sender = chat.value?.members.find(
+  const sender = chat.value.members.find(
     (member) => member.id === message.createdBy,
   )
 
