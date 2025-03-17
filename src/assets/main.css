@@ -1,0 +1,56 @@
+@import 'tailwindcss';
+
+body {
+  @apply font-mono text-sm text-gray-700;
+}
+
+button:not(:disabled),
+[role='button']:not(:disabled) {
+  cursor: pointer;
+}
+
+input,
+textarea,
+select {
+  @apply h-9 rounded-md border border-gray-200 px-2 outline-hidden;
+}
+
+textarea {
+  @apply resize-none;
+}
+
+label {
+  @apply mb-2 block text-xs font-bold text-gray-500;
+}
+
+.btn-base {
+  @apply flex h-9 items-center justify-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-8 text-xs transition-colors disabled:cursor-not-allowed disabled:text-gray-400 sm:hover:bg-gray-100;
+}
+
+/* 列表动画 */
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-leave-active {
+  position: absolute;
+}
+
+/*  */
+.move-left-full-enter-active,
+.move-left-full-leave-active {
+  transition: transform 0.3s;
+}
+
+.move-left-full-enter-from,
+.move-left-full-leave-to {
+  transform: translateX(100%);
+}
