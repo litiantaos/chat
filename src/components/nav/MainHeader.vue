@@ -41,18 +41,19 @@ const { chats, showGroupMembers } = useChat()
 const props = defineProps(['isMobile'])
 const showSidebar = defineModel(false)
 
-const path = route.path.split('/').pop()
 const chatId = computed(() => route.params.id)
 const chat = computed(() => chats.value.find((c) => c.id === chatId.value))
 
 const titleMap = {
-  ai: '创建AI好友',
+  ai: (route) => (route.params.aiId ? '编辑AI好友' : '创建AI好友'),
   group: '创建群聊',
   preferences: '设置',
 }
 
 const pageTitle = computed(() => {
   if (chat.value) return chat.value?.name
-  return titleMap[path]
+  return typeof titleMap[route.name] === 'function'
+    ? titleMap[route.name](route)
+    : titleMap[route.name]
 })
 </script>

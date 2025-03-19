@@ -156,3 +156,22 @@ export const getChatMembersFromRelations = async (chatMemberRelations) => {
     }),
   )
 }
+
+export const addMemberToChat = (data) => createItem('chat_members', data)
+
+export const removeMemberFromChat = async (chatId, memberId) => {
+  const relations = await getItemsByIndex('chat_members', 'chatId', chatId)
+  const relation = relations.find((r) => r.memberId === memberId)
+  if (relation) {
+    return deleteItem('chat_members', relation.id)
+  }
+  return false
+}
+
+// 获取未在群组中的AI角色
+export const getAvailableCharacters = async (chatId) => {
+  const allCharacters = await getAllCharacters()
+  const chatMembers = await getChatMemberRelations(chatId)
+  const memberIds = chatMembers.map((m) => m.memberId)
+  return allCharacters.filter((char) => !memberIds.includes(char.id))
+}

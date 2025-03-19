@@ -13,7 +13,12 @@
         class="flex w-full gap-2"
         :class="isUserMessage(message) ? 'flex-row-reverse' : ''"
       >
-        <Avatar :text="getSenderName(message)" size="sm" />
+        <Avatar
+          size="sm"
+          :text="getSenderName(message)"
+          @click="handleAvatarClick(message)"
+          :class="!isUserMessage(message) ? 'cursor-pointer' : ''"
+        />
 
         <div
           class="flex max-w-3/4 flex-col gap-2 rounded-md p-3"
@@ -45,13 +50,13 @@
       ></textarea>
     </div>
 
-    <GroupMembers :chat="chat" @update-group-name="onUpdateGroupName" />
+    <GroupMembers :chat="chat" />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch, nextTick } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 import { useChat } from '@/composables/useChat'
 import { formatTime } from '@/utils/time'
@@ -59,6 +64,7 @@ import Avatar from '@/components/ui/Avatar.vue'
 import GroupMembers from '@/components/main/GroupMembers.vue'
 
 const route = useRoute()
+const router = useRouter()
 const { currentUser } = useAuth()
 const { chats, chatMessages, sendMessage, loadMessages } = useChat()
 
@@ -118,10 +124,10 @@ const handleSend = async () => {
   await sendMessage(chatId.value, content)
 }
 
-const onUpdateGroupName = (name) => {
-  const chatIndex = chats.value.findIndex((c) => c.id === chatId.value)
-  if (chatIndex > -1) {
-    chats.value[chatIndex].name = name
+// 点击AI头像
+const handleAvatarClick = (message) => {
+  if (!isUserMessage(message)) {
+    router.push(`/ai/${message.createdBy}`)
   }
 }
 

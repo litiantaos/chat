@@ -20,18 +20,22 @@ const router = createRouter({
       children: [
         {
           path: '',
+          name: 'welcome',
           component: Welcome,
         },
         {
-          path: 'ai',
+          path: 'ai/:aiId?',
+          name: 'ai',
           component: CreateAIFriend,
         },
         {
           path: 'group',
+          name: 'group',
           component: CreateGroup,
         },
         {
           path: 'chat',
+          name: 'chat',
           component: Chat,
         },
         {
@@ -40,6 +44,7 @@ const router = createRouter({
         },
         {
           path: 'preferences',
+          name: 'preferences',
           component: Preferences,
         },
       ],

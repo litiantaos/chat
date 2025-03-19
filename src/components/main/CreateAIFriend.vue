@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex-1 overflow-y-auto p-4">
-    <form @submit.prevent="handleCreateCharacter" class="space-y-6">
+    <form @submit.prevent="handleSubmit" class="space-y-6">
       <div>
         <label for="name">名字</label>
         <input
@@ -73,16 +73,17 @@
         :disabled="!form.name"
         class="btn-base text-blue-500"
       >
-        创建
+        {{ isEdit ? '保存' : '创建' }}
       </button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useChat } from '@/composables/useChat'
+import { getCharacterById, updateCharacter } from '@/services/repositories'
 
 const personalityOptions = [
   '开朗活泼',
@@ -129,15 +130,37 @@ const form = ref({
 })
 
 const router = useRouter()
+const route = useRoute()
+const isEdit = computed(() => !!route.params.aiId)
 
 const { createAICharacter } = useChat()
 
-const handleCreateCharacter = async () => {
+onMounted(async () => {
+  if (route.params.aiId) {
+    const character = await getCharacterById(route.params.aiId)
+    if (character) {
+      form.value = {
+        name: character.name,
+        gender: character.gender,
+        personality: character.personality,
+        background: character.background,
+        description: character.description,
+      }
+    }
+  }
+})
+
+const handleSubmit = async () => {
   try {
-    const chatId = await createAICharacter(form.value)
-    router.push(`/chat/${chatId}`)
+    if (isEdit.value) {
+      await updateCharacter(route.params.aiId, form.value)
+      router.back()
+    } else {
+      const chatId = await createAICharacter(form.value)
+      router.push(`/chat/${chatId}`)
+    }
   } catch (error) {
-    console.error('创建AI角色失败:', error)
+    console.error(isEdit.value ? '更新AI角色失败:' : '创建AI角色失败:', error)
   }
 }
 </script>
