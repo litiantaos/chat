@@ -107,7 +107,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useChat } from '@/composables/useChat'
 import MainHeader from '@/components/nav/MainHeader.vue'
 import { xhsBasePrompt, gzhBasePrompt, stylePrompts } from '@/config/prompts'
@@ -120,7 +120,7 @@ const userContent = ref(`- 封面文案：[…]
 - 可选标语：[…]
 - …`)
 const coverStyle = ref(Object.keys(stylePrompts)[0])
-const coverStyleContent = ref(stylePrompts[coverStyle.value])
+const coverStyleContent = computed(() => stylePrompts[coverStyle.value])
 
 const loading = ref(false)
 const showPreview = ref(false)
@@ -143,7 +143,7 @@ const handleSubmit = async () => {
     },
   ]
 
-  // console.log('message content:', messages[0].content)
+  console.log('message content:', messages[0].content)
 
   const response = await getAIResponse(messages)
 
@@ -155,7 +155,7 @@ const handleSubmit = async () => {
     .replace(/<\/body>/g, '<\/body>')
     .replace(/<\/script>/g, '<\/script>')
 
-  // console.log(html.value)
+  console.log(html.value)
 
   loading.value = false
   showPreview.value = true
