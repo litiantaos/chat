@@ -1,43 +1,51 @@
 <template>
-  <div class="w-full flex-1 overflow-y-auto p-4">
-    <form @submit.prevent="handleCreateGroup" class="space-y-6">
-      <div>
-        <label for="name">群聊名称</label>
-        <input
-          id="name"
-          type="text"
-          v-model="form.name"
-          required
-          placeholder="请输入群聊名称"
-          class="w-full"
-        />
-      </div>
+  <div class="flex h-full flex-1 flex-col">
+    <MainHeader title="创建群聊" />
 
-      <div>
-        <label>选择成员</label>
-        <div class="overflow-hidden rounded-md border border-gray-200">
-          <div class="max-h-120 overflow-y-auto">
-            <div
-              v-for="character in characters"
-              :key="character.id"
-              class="flex items-center gap-3 p-3 hover:bg-gray-50"
-            >
-              <input
-                type="checkbox"
-                :checked="isSelected(character.id)"
-                @change="toggleMember(character.id)"
-                class="h-3 w-3 cursor-pointer rounded-md border-gray-200"
-              />
-              <UserDisplay :name="character.name" />
+    <div class="w-full flex-1 overflow-y-auto p-4">
+      <form @submit.prevent="handleCreateGroup" class="space-y-6">
+        <div>
+          <label for="name">群聊名称</label>
+          <input
+            id="name"
+            type="text"
+            v-model="form.name"
+            required
+            placeholder="请输入群聊名称"
+            class="w-full"
+          />
+        </div>
+
+        <div>
+          <label>选择成员</label>
+          <div class="overflow-hidden rounded-md border border-gray-200">
+            <div class="max-h-120 overflow-y-auto">
+              <div
+                v-for="character in characters"
+                :key="character.id"
+                class="flex items-center gap-3 p-3 hover:bg-gray-50"
+              >
+                <input
+                  type="checkbox"
+                  :checked="isSelected(character.id)"
+                  @change="toggleMember(character.id)"
+                  class="h-3 w-3 cursor-pointer rounded-md border-gray-200"
+                />
+                <UserDisplay :name="character.name" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <button type="submit" class="btn-base text-blue-500" :disabled="!isValid">
-        创建
-      </button>
-    </form>
+        <button
+          type="submit"
+          class="btn-base text-blue-500"
+          :disabled="!isValid"
+        >
+          创建
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -46,6 +54,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { getAllCharacters } from '@/services/repositories'
 import { useChat } from '@/composables/useChat'
+import MainHeader from '@/components/nav/MainHeader.vue'
 import UserDisplay from '@/components/ui/UserDisplay.vue'
 
 const { createGroup } = useChat()

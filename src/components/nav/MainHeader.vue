@@ -1,6 +1,5 @@
 <template>
   <header
-    v-if="pageTitle || isMobile"
     class="flex h-15 items-center justify-between gap-4 border-b border-gray-200 px-4"
   >
     <div class="flex items-center gap-3">
@@ -10,50 +9,21 @@
         @click="showSidebar = !showSidebar"
       ></button>
 
-      <h2 class="font-bold">{{ pageTitle }}</h2>
+      <h2 class="font-bold">{{ title }}</h2>
 
-      <div
-        v-if="chat?.members?.length > 2"
-        class="rounded-md bg-gray-200 px-2 py-px text-xs"
-      >
-        {{ chat.members.length }}
-      </div>
+      <slot name="left" />
     </div>
 
     <div>
-      <button
-        v-if="chat?.members?.length > 2"
-        class="ri-more-line text-base font-bold"
-        @click="showGroupMembers = !showGroupMembers"
-      ></button>
+      <slot name="right" />
     </div>
   </header>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { useChat } from '@/composables/useChat'
 
-const route = useRoute()
-const { chats, showGroupMembers } = useChat()
+const { isMobile, showSidebar } = useChat()
 
-const props = defineProps(['isMobile'])
-const showSidebar = defineModel(false)
-
-const chatId = computed(() => route.params.id)
-const chat = computed(() => chats.value.find((c) => c.id === chatId.value))
-
-const titleMap = {
-  ai: (route) => (route.params.aiId ? '编辑AI好友' : '创建AI好友'),
-  group: '创建群聊',
-  preferences: '设置',
-}
-
-const pageTitle = computed(() => {
-  if (chat.value) return chat.value?.name
-  return typeof titleMap[route.name] === 'function'
-    ? titleMap[route.name](route)
-    : titleMap[route.name]
-})
+const props = defineProps(['title'])
 </script>

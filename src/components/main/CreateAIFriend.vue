@@ -1,81 +1,84 @@
 <template>
-  <div class="w-full flex-1 overflow-y-auto p-4">
-    <form @submit.prevent="handleSubmit" class="space-y-6">
-      <div>
-        <label for="name">名字</label>
-        <input
-          id="name"
-          v-model="form.name"
-          type="text"
-          placeholder="请输入名字"
-          required
-          class="w-full"
-        />
-      </div>
+  <div class="flex h-full flex-1 flex-col">
+    <MainHeader :title="isEdit ? '编辑AI好友' : '创建AI好友'" />
 
-      <div>
-        <label for="gender">性别</label>
-        <select
-          id="gender"
-          v-model="form.gender"
-          required
-          placeholder="请选择性别"
-          class="w-full"
+    <div class="w-full flex-1 overflow-y-auto p-4">
+      <form @submit.prevent="handleSubmit" class="space-y-6">
+        <div>
+          <label for="name">名字</label>
+          <input
+            id="name"
+            v-model="form.name"
+            type="text"
+            placeholder="请输入名字"
+            required
+            class="w-full"
+          />
+        </div>
+
+        <div>
+          <label for="gender">性别</label>
+          <select
+            id="gender"
+            v-model="form.gender"
+            required
+            placeholder="请选择性别"
+            class="w-full"
+          >
+            <option value="男">男</option>
+            <option value="女">女</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="personality">性格</label>
+          <select
+            id="personality"
+            v-model="form.personality"
+            required
+            placeholder="请选择性格"
+            class="w-full"
+          >
+            <option v-for="p in personalityOptions" :key="p" :value="p">
+              {{ p }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="background">背景</label>
+          <select
+            id="background"
+            v-model="form.background"
+            required
+            placeholder="请选择背景"
+            class="w-full"
+          >
+            <option v-for="b in backgroundOptions" :key="b" :value="b">
+              {{ b }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="description">自定义设定</label>
+          <textarea
+            id="description"
+            v-model="form.description"
+            class="h-30! w-full p-2"
+            placeholder="更多个性化的自定义设定"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          :disabled="!form.name"
+          class="btn-base text-blue-500"
         >
-          <option value="男">男</option>
-          <option value="女">女</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="personality">性格</label>
-        <select
-          id="personality"
-          v-model="form.personality"
-          required
-          placeholder="请选择性格"
-          class="w-full"
-        >
-          <option v-for="p in personalityOptions" :key="p" :value="p">
-            {{ p }}
-          </option>
-        </select>
-      </div>
-
-      <div>
-        <label for="background">背景</label>
-        <select
-          id="background"
-          v-model="form.background"
-          required
-          placeholder="请选择背景"
-          class="w-full"
-        >
-          <option v-for="b in backgroundOptions" :key="b" :value="b">
-            {{ b }}
-          </option>
-        </select>
-      </div>
-
-      <div>
-        <label for="description">自定义设定</label>
-        <textarea
-          id="description"
-          v-model="form.description"
-          rows="3"
-          class="h-30! w-full p-2"
-          placeholder="更多个性化的自定义设定"
-        ></textarea>
-      </div>
-
-      <button
-        type="submit"
-        :disabled="!form.name"
-        class="btn-base text-blue-500"
-      >
-        {{ isEdit ? '保存' : '创建' }}
-      </button>
-    </form>
+          {{ isEdit ? '保存' : '创建' }}
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -84,6 +87,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useChat } from '@/composables/useChat'
 import { getCharacterById, updateCharacter } from '@/services/repositories'
+import MainHeader from '@/components/nav/MainHeader.vue'
 
 const personalityOptions = [
   '开朗活泼',

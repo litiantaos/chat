@@ -2,28 +2,20 @@
   <div class="flex h-screen overflow-hidden">
     <Sidebar v-model="showSidebar" :is-mobile="isMobile" />
 
-    <main class="flex flex-1 flex-col">
-      <MainHeader v-model="showSidebar" :is-mobile="isMobile" />
-
-      <RouterView />
-    </main>
+    <RouterView />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import { useChat } from '@/composables/useChat'
 import Sidebar from '@/components/nav/Sidebar.vue'
-import MainHeader from '@/components/nav/MainHeader.vue'
 
 const route = useRoute()
-const { showGroupMembers, initData } = useChat()
+const { isMobile, showSidebar, showGroupMembers, initData } = useChat()
 
 // 监听窗口宽度变化
-const isMobile = ref(false)
-const showSidebar = ref(false)
-
 const handleResize = () => {
   if (window.innerWidth < 640) {
     isMobile.value = true

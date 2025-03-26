@@ -6,6 +6,7 @@ import CreateAIFriend from '@/components/main/CreateAIFriend.vue'
 import CreateGroup from '@/components/main/CreateGroup.vue'
 import Chat from '@/components/main/Chat.vue'
 import Preferences from '@/components/main/Preferences.vue'
+import GenerateCover from '@/components/main/GenerateCover.vue'
 import Auth from '@/views/Auth.vue'
 
 const { currentUser, loadUserFromStorage } = useAuth()
@@ -46,6 +47,11 @@ const router = createRouter({
           path: 'preferences',
           name: 'preferences',
           component: Preferences,
+        },
+        {
+          path: 'cover',
+          name: 'cover',
+          component: GenerateCover,
         },
       ],
     },

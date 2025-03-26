@@ -1,56 +1,79 @@
 <template>
-  <div
-    v-if="chat && chat.members && chat.members.length"
-    class="relative flex flex-1 flex-col overflow-hidden"
-  >
+  <div v-if="chat" class="flex h-full flex-1 flex-col">
+    <MainHeader :title="chat.name">
+      <template #left>
+        <div
+          v-if="chat?.members?.length > 2"
+          class="rounded-md bg-gray-200 px-2 py-px text-xs"
+        >
+          {{ chat.members.length }}
+        </div>
+      </template>
+
+      <template #right>
+        <button
+          v-if="chat?.members?.length > 2"
+          class="ri-more-line text-base font-bold"
+          @click="showGroupMembers = !showGroupMembers"
+        ></button>
+      </template>
+    </MainHeader>
+
     <div
-      class="flex flex-1 flex-col gap-4 overflow-y-auto p-4"
-      ref="messageContainer"
+      v-if="chat?.members?.length"
+      class="relative flex flex-1 flex-col overflow-hidden"
     >
       <div
-        v-for="message in messages"
-        :key="message.id"
-        class="flex w-full gap-2"
-        :class="isUserMessage(message) ? 'flex-row-reverse' : ''"
+        class="flex flex-1 flex-col gap-4 overflow-y-auto p-4"
+        ref="messageContainer"
       >
-        <Avatar
-          size="sm"
-          :text="getSenderName(message)"
-          @click="handleAvatarClick(message)"
-          :class="!isUserMessage(message) ? 'cursor-pointer' : ''"
-        />
-
         <div
-          class="flex max-w-3/4 flex-col gap-2 rounded-md p-3"
-          :class="
-            isUserMessage(message) ? 'bg-gray-600 text-white' : 'bg-gray-100'
-          "
+          v-for="message in messages"
+          :key="message.id"
+          class="flex w-full gap-2"
+          :class="isUserMessage(message) ? 'flex-row-reverse' : ''"
         >
-          <div>{{ message.content }}</div>
+          <Avatar
+            size="sm"
+            :text="getSenderName(message)"
+            @click="handleAvatarClick(message)"
+            :class="!isUserMessage(message) ? 'cursor-pointer' : ''"
+          />
 
           <div
-            class="flex gap-2 text-xs"
-            :class="isUserMessage(message) ? 'text-gray-300' : 'text-gray-400'"
+            class="flex max-w-3/4 flex-col gap-2 rounded-md p-3"
+            :class="
+              isUserMessage(message) ? 'bg-gray-600 text-white' : 'bg-gray-100'
+            "
           >
-            <span class="font-bold">
-              {{ getSenderName(message) }}
-            </span>
-            <span>{{ formatTime(message.createdAt) }}</span>
+            <div>{{ message.content }}</div>
+
+            <div
+              class="flex gap-2 text-xs"
+              :class="
+                isUserMessage(message) ? 'text-gray-300' : 'text-gray-400'
+              "
+            >
+              <span class="font-bold">
+                {{ getSenderName(message) }}
+              </span>
+              <span>{{ formatTime(message.createdAt) }}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="border-t border-gray-200 p-4">
-      <textarea
-        v-model="input"
-        placeholder="请输入消息"
-        class="h-20! w-full rounded-md border border-gray-200 p-2"
-        @keydown.enter.prevent="handleSend"
-      ></textarea>
-    </div>
+      <div class="border-t border-gray-200 p-4">
+        <textarea
+          v-model="input"
+          placeholder="请输入消息"
+          class="h-20! w-full rounded-md border border-gray-200 p-2"
+          @keydown.enter.prevent="handleSend"
+        ></textarea>
+      </div>
 
-    <GroupMembers :chat="chat" />
+      <GroupMembers :chat="chat" />
+    </div>
   </div>
 </template>
 
@@ -60,13 +83,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 import { useChat } from '@/composables/useChat'
 import { formatTime } from '@/utils/time'
+import MainHeader from '@/components/nav/MainHeader.vue'
 import Avatar from '@/components/ui/Avatar.vue'
 import GroupMembers from '@/components/main/GroupMembers.vue'
 
 const route = useRoute()
 const router = useRouter()
 const { currentUser } = useAuth()
-const { chats, chatMessages, sendMessage, loadMessages } = useChat()
+const { chats, chatMessages, showGroupMembers, sendMessage, loadMessages } =
+  useChat()
 
 const chatId = computed(() => route.params.id)
 const chat = computed(() => chats.value.find((c) => c.id === chatId.value))

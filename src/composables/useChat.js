@@ -238,10 +238,12 @@ const getAIResponse = async (messages) => {
     return data.choices[0].message.content
   } catch (error) {
     console.error('获取AI回复失败:', error)
-    throw new Error('获取AI回复失败')
   }
 }
 
+// 响应式布局变量
+const isMobile = ref(false)
+const showSidebar = ref(false)
 // 显示群聊菜单
 const showGroupMembers = ref(false)
 
@@ -250,11 +252,14 @@ export const useChat = () => {
     chats,
     chatMessages,
     loading,
+    isMobile,
+    showSidebar,
     showGroupMembers,
     initData,
     createAICharacter,
     createGroup,
     loadMessages,
     sendMessage,
+    getAIResponse,
   }
 }
